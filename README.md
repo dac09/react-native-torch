@@ -46,6 +46,28 @@ if (Platform.OS === 'ios') {
 }
 ```
 
+### Android catch exception accessing Torch e.g. in emulator or if device doesn't have a torch
+
+```js
+const cameraAllowed = await Torch.requestCameraPermission(
+	'Camera Permissions', // dialog title
+	'We require camera permissions to use the torch on the back of your phone.' // dialog body
+);
+
+try {
+	const output = await Torch.switchState(newTorchState);
+	this.setState({ isTorchOn: newTorchState });
+} catch (e) {
+	ToastAndroid.show(
+		'We seem to have an issue accessing your torch',
+		ToastAndroid.SHORT
+	);
+}
+```
+
+NOTE:
+iOS fails silently, on Android, you can still call without the try/catch block and it won't cause a crash
+
 A demo application [TorchDemo](https://github.com/ludo/TorchDemo) is also
 available.
 
